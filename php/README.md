@@ -13,6 +13,11 @@ The kata uses:
 Recommended:
 - [Git](https://git-scm.com/downloads)
 
+Clone the repository 
+```
+https://github.com/Upsas/GildedRose-Refactoring-Kata.git
+```
+
 Install all the dependencies using composer
 
 ```shell script
