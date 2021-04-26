@@ -4,65 +4,51 @@ declare(strict_types=1);
 
 namespace GildedRose;
 
+use GildedRose\Categories\CategoryInterface;
+
 final class GildedRose
 {
+    private const AGED_BRIE = 'Aged Brie';
+
+    private const BACKSTAGE = 'Backstage';
+
+    private const SULFURAS = 'Sulfuras';
+
+    private const CONJURED = 'Conjured';
+
     /**
      * @var Item[]
      */
     private $items;
 
-    public function __construct(array $items)
+    /**
+     * @var CategoryInterface[]
+     */
+    private $category;
+
+    public function __construct(array $items, array $category)
     {
+        $this->category = $category;
         $this->items = $items;
     }
 
     public function updateQuality(): void
     {
         foreach ($this->items as $item) {
-            if ($item->name != 'Aged Brie' and $item->name != 'Backstage passes to a TAFKAL80ETC concert') {
-                if ($item->quality > 0) {
-                    if ($item->name != 'Sulfuras, Hand of Ragnaros') {
-                        $item->quality = $item->quality - 1;
-                    }
-                }
-            } else {
-                if ($item->quality < 50) {
-                    $item->quality = $item->quality + 1;
-                    if ($item->name == 'Backstage passes to a TAFKAL80ETC concert') {
-                        if ($item->sell_in < 11) {
-                            if ($item->quality < 50) {
-                                $item->quality = $item->quality + 1;
-                            }
-                        }
-                        if ($item->sell_in < 6) {
-                            if ($item->quality < 50) {
-                                $item->quality = $item->quality + 1;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if ($item->name != 'Sulfuras, Hand of Ragnaros') {
-                $item->sell_in = $item->sell_in - 1;
-            }
-
-            if ($item->sell_in < 0) {
-                if ($item->name != 'Aged Brie') {
-                    if ($item->name != 'Backstage passes to a TAFKAL80ETC concert') {
-                        if ($item->quality > 0) {
-                            if ($item->name != 'Sulfuras, Hand of Ragnaros') {
-                                $item->quality = $item->quality - 1;
-                            }
-                        }
-                    } else {
-                        $item->quality = $item->quality - $item->quality;
-                    }
-                } else {
-                    if ($item->quality < 50) {
-                        $item->quality = $item->quality + 1;
-                    }
-                }
+            switch ($item->name) {
+                case preg_match('/' . self::AGED_BRIE . '/', $item->name) === 1:
+                    $this->category['agedBrie']->updateQuality($item);
+                    break;
+                case preg_match('/' . self::BACKSTAGE . '/', $item->name) === 1:
+                    $this->category['backstage']->updateQuality($item);
+                    break;
+                case preg_match('/' . self::SULFURAS . '/', $item->name) === 1:
+                    break;
+                case preg_match('/' . self::CONJURED . '/', $item->name) === 1:
+                    $this->category['conjured']->updateQuality($item);
+                    break;
+                default:
+                    $this->category['standardRules']->updateQuality($item);
             }
         }
     }

@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use GildedRose\GildedRose;
+use GildedRose\Factory\GildedRoseFactory;
 use GildedRose\Item;
 
 echo "OMGHAI!" . PHP_EOL;
@@ -20,7 +20,8 @@ $items = array(
     new Item('Conjured Mana Cake', 3, 6)
 );
 
-$app = new GildedRose($items);
+$class = new GildedRoseFactory();
+$app = $class->createGildedRose($items);
 
 $days = 2;
 if (count($argv) > 1) {
@@ -35,4 +36,5 @@ for ($i = 0; $i < $days; $i++) {
     }
     echo PHP_EOL;
     $app->updateQuality();
+
 }

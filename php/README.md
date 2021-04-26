@@ -13,18 +13,6 @@ The kata uses:
 Recommended:
 - [Git](https://git-scm.com/downloads)
 
-Clone the repository
-
-```sh
-git clone git@github.com:emilybache/GildedRose-Refactoring-Kata.git
-```
-
-or
-
-```shell script
-git clone https://github.com/emilybache/GildedRose-Refactoring-Kata.git
-```
-
 Install all the dependencies using composer
 
 ```shell script
@@ -42,16 +30,38 @@ The project uses composer to install:
 - [Easy Coding Standard (ECS)](https://github.com/symplify/easy-coding-standard) 
 - [PHP CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer/wiki)
 
+## Run program
+
+`php fixtures/texttest_fixture.php`
+
 ## Folders
 
-- `src` - contains the two classes:
+- `src` - contains the two folders:
+  - `Categories` - contains all categories and their business logic
+    - `AgedBrie.php` - this class contains all logic for Aged Brie category 
+    - `Backstage.php` - this class contains all logic for Backstage category
+    - `Conjured.php` - this class contains all logic for Conjured category
+    - `CategoryInterface.php` - this interface implements in all categories and standard rules.
+  - `Factory` - contains one class
+    - `GildedRoseFactory.php` - this class has method which returns created GildedRose object.
   - `Item.php` - this class should not be changed.
-  - `GildedRose.php` - this class needs to be refactored, and the new feature added.
+  - `GildedRose.php` - this class like controller for categories, implements logic by category.
+  - `StandardRules.php` - this class contains logic for items with no category.
 - `tests` - contains the tests
-  - `GildedRoseTest.php` - Starter test.
+  - `GildedRoseTest.php` - Main functionality tests.
   - `ApprovalTest.php` - alternative approval test (set to 30 days)
 - `Fixture`
   - `texttest_fixture.php` used by the approval test, or can be run from the command line
+
+## Solution
+
+My solution to this kata:
+
+- `separate all logic by categories in different classes.`
+- `If item does not have category implement sdandard rules`
+- `implement interface to all categories and standard rule classes`
+- `Create factory pattern and return created GildedRose object with CategoriesInterface`
+- `In GildedRose all logic is iplemented by category using interface`
 
 ## Testing
 
